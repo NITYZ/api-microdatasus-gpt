@@ -1,4 +1,4 @@
-FROM rocker/plumber:latest
+FROM rocker/r-base:latest
 
 RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
@@ -6,8 +6,12 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     git \
     build-essential \
+    gfortran \
+    pandoc \
+    libgit2-dev \
     && rm -rf /var/lib/apt/lists/*
 
+RUN R -e "install.packages('plumber', repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('remotes', repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('dplyr', repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('checkmate', repos = 'https://cloud.r-project.org')"
