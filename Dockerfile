@@ -1,15 +1,18 @@
-FROM rocker/plumber:latest
+FROM rocker/r-base:latest
 
-# Instalação dos pacotes necessários
-RUN install2.r --error \
-    remotes \
-    plumber \
-    dplyr \
-    read.dbc
+# Instala dependências do sistema (curl para remotes, etc)
+RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN Rscript -e "remotes::install_github('rfsaldanha/microdatasus')"
+# Instala pacotes R necessários
+RUN R -e "install.packages(c('plumber', 'remotes', 'dplyr'), repos = 'https://cloud.r-project.org')"
+RUN R -e "install.packages('read.dbc', repos = 'https://packagemanager.posit.co/cran/2024-07-05')"
+RUN R -e "remotes::install_github('rfsaldanha/microdatasus')"
 
-# Copia seus arquivos para dentro do container
+# Copia o script da API
 COPY plumber.R /app/plumber.R
 
 EXPOSE 8080
