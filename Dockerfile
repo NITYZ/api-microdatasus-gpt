@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Instala TODOS os pacotes R necessários
 RUN R -e "install.packages(c('plumber', 'remotes', 'dplyr', 'checkmate', 'cli', 'curl', 'data.table', 'dtplyr', 'foreign', 'lubridate', 'magrittr', 'RCurl', 'rlang', 'stringi', 'tibble', 'utils', 'zip'), repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('read.dbc', repos = 'https://packagemanager.posit.co/cran/2024-07-05')"
 RUN R -e "remotes::install_github('rfsaldanha/microdatasus')"
