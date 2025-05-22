@@ -1,17 +1,13 @@
-FROM rocker/r-base:latest
+FROM rocker/plumber:latest
 
-# Instale dependências do sistema operacional necessárias para plumber e outros pacotes R
 RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
-    libgit2-dev \
     git \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Instale pacotes R (um por vez, para facilitar debug de falha)
-RUN R -e "install.packages('plumber', repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('remotes', repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('dplyr', repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('checkmate', repos = 'https://cloud.r-project.org')"
